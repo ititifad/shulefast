@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+<div class="text-center">
+<h4>Toa maoni yako</h4>
+</div>
+
+<div class="container pt-4 mb-14">
+    <div class="row g-3 justify-content-center">
+        
+            <form style="width: 28rem;" method="post">
+                {% csrf_token %}
+                <!-- Name input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <input type="text" name="name" id="form4Example1" class="form-control" required />
+                  <label class="form-label" for="form4Example1">Name</label>
+                </div>
+              
+                
+              
+                <!-- Message input -->
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <textarea class="form-control" name="feedback_text" id="form4Example3" rows="5" required></textarea>
+                  <label class="form-label" for="form4Example3">Message</label>
+                </div>
+              
+                <!-- Checkbox -->
+                
+              
+                <!-- Submit button -->
+                <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block mb-4">Send</button>
+              </form>
+        </form>
+        
+    </div>
+</div>
+
+{% endblock %}

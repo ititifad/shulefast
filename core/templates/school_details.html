@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  ul {
+      list-style: none;
+      padding: 0;
+  }
+
+
+
+  .xzoom-thumbs img {
+      display: block;
+      margin-bottom: 10px;
+      height: 65px;
+      width: 65px;
+      border: 1px solid rgb(255, 255, 255);
+      cursor: pointer;
+      transition: 5ms;
+  }
+
+  .xzoom-gallery img {
+      display: block;
+      margin-bottom: 10px;
+      max-width: 90%;
+      height: auto;
+      cursor: pointer;
+      transition: 5ms;
+  }
+
+  .contact-info {
+      margin-top: 20px;
+  }
+
+  .contact-info h6 {
+      display: flex;
+      align-items: center;
+  }
+
+  .contact-info i {
+      margin-right: 10px;
+      color: #4688b8; /* MDBootstrap primary color */
+  }
+
+  .btn-download {
+      background-color: #44977b; /* MDBootstrap primary color */
+      color: #ffffff; /* White text */
+      border: none;
+  }
+
+  @media (max-width: 768px) {
+      .xzoom-thumbs {
+          float: none;
+          margin-right: 0;
+      }
+      .xzoom-thumbs img {
+          display: inline-block;
+          margin-right: 5px;
+      }
+  }
+
+</style>
+
+<br>
+<div class="text-center">
+    <h3>{{ school }}</h3>
+</div>
+
+<div class="container pt-2 mb-4">
+  <div class="row g-3">
+    <div class="col-lg-1">
+        <div class="xzoom-thumbs">
+            {% for image in school.schoolimages.all %}
+                <img class="xzoom-gallery img-fluid" src="{{ image.images.url }}" alt="" onclick="myFunction(this)">
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <img src="{{ school.logo.url }}" alt="" class="block__pic img-fluid" id="imageBox" width="100%">
+    </div>
+        <div class="col-lg-4 px-3">
+            <h6>School Name: <strong>{{ school.name }}</strong></h6>
+            <h6><small>Category: <strong>{{ school.subcategory.category }}</strong></small></h6>
+            <h6>Region: <strong>{{ school.region }}</strong></h6>
+            
+                <h6><i class="fas fa-map-marker-alt"></i> Location: <strong>{{ school.location }}</strong></h6>
+                <h6><i class="fas fa-phone"></i> Phone: <strong>{{ school.phone_number1 }}</strong></h6>
+                <h6><i class="fas fa-phone"></i> Phone: <strong>{{ school.phone_number2 }}</strong></h6>
+                <h6><i class="fab fa-whatsapp"></i> WhatsApp Number: <strong>{{ school.whatsapp_number }}</strong></h6>
+                <h6><i class="far fa-envelope"></i> Email: <strong>{{ school.email }}</strong></h6>
+           
+            
+        </div>
+        
+        <div class="col-lg-3 bg-light">
+          <h4>Our Joining Instruction Forms</h4>
+            {% for file in school.schooljoining.all %}
+                <ul>
+                    <li>
+                        <a href="{{ file.file.url }}" class="btn btn-download" target="_blank">Download {{ file.title }}</a>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container pt-3 mb-4">
+    <!-- Tabs navs -->
+<ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link active"
+        id="ex3-tab-1"
+        data-mdb-toggle="tab"
+        href="#ex3-tabs-1"
+        role="tab"
+        aria-controls="ex3-tabs-1"
+        aria-selected="true"
+        >About {{school}}</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        id="ex3-tab-2"
+        data-mdb-toggle="tab"
+        href="#ex3-tabs-2"
+        role="tab"
+        aria-controls="ex3-tabs-2"
+        aria-selected="false"
+        >Academic Achievements</a
+      >
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        id="ex3-tab-3"
+        data-mdb-toggle="tab"
+        href="#ex3-tabs-3"
+        role="tab"
+        aria-controls="ex3-tabs-3"
+        aria-selected="false"
+        >Opening/Closing Hours</a
+      >
+    </li>
+  </ul>
+  <!-- Tabs navs -->
+  
+  <!-- Tabs content -->
+  <div class="tab-content" id="ex2-content">
+    <div
+      class="tab-pane fade show active"
+      id="ex3-tabs-1"
+      role="tabpanel"
+      aria-labelledby="ex3-tab-1"
+    >
+    <p>{{school.description}}</p>
+      
+    </div>
+    <div
+      class="tab-pane fade"
+      id="ex3-tabs-2"
+      role="tabpanel"
+      aria-labelledby="ex3-tab-2"
+    >
+ <table class="table table-sm table-bordered">
+  <tr>
+    <th>Title</th>
+    <th>File</th>
+  </tr>
+  {% for file in school.schoolacademics.all %}
+  <tr>
+    <td>{{file.title}}</td>
+    <td><a href="{{ file.file.url }}" class="btn btn-download" target="_blank">View Results</a></td>
+  </tr>
+  {% endfor %}
+  
+  
+
+ </table>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="ex3-tabs-3"
+      role="tabpanel"
+      aria-labelledby="ex3-tab-3"
+    >
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+      <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+          <thead class="bg-light">
+          <tr>
+            <th>Day</th>
+            <th>Open</th>
+            <th>Close</th>
+          </tr>
+          </thead>
+          {% for day in school.openinghours.all %}
+          <tr>
+            <td>{{day.weekday}}</td>
+            <td>{{day.from_hour}}</td>
+            <td>{{day.to_hour}}</td>
+          </tr>
+
+          {% endfor %}
+        </table>
+      </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!-- Tabs content -->
+</div>
+
+
+<script>
+  $(document).ready(function () {
+      $(".block__pic").imagezoomsl({
+          zoomrange: [3, 3]
+      });
+  });
+</script>
+<script>
+  function myFunction(smallImg)
+  {
+      var fullImg = document.getElementById("imageBox")
+      fullImg.src = smallImg.src;
+  }
+</script>
+
+{% endblock %}

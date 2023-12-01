@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  p{
+    font-weight: 700;
+  }
+</style>
+
+<br>
+<div class="text-center">
+<h4>{{subcategory}}</h4>
+</div>
+
+<div class="container mb-3">
+    <form method="GET" class="search-form" action=".">
+        <div class="input-group">
+          <div class="form-outline">
+            <input type="search" id="form1" class="form-control" name="query" />
+            <label class="form-label" for="form1">Search School</label>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <!-- <div class="form-group inputwithicon">
+          <i class="lni-tag"></i>
+          <input type="text" name="customword" class="form-control" placeholder="Enter Product Keyword">
+        </div> -->
+      </form>
+</div>
+
+<div class="container pt-4 mb-14">
+    <div class="row g-3 justify-content-center">
+        {% for school in data %}
+        <div class="col-lg-3">
+            <a href="{{school.get_absolute_url}}" class="text-dark">
+            <div class="card text-center h-100">
+              <div class="image">
+                <img src="{{school.logo.url}}" alt="{{ school.name }}" width="70%">
+              </div>
+                <div class="card-body">
+                <div class="card-title">
+                    <p>
+                        {{school.name}}
+                    </p>
+                    
+                    <button class="btn btn-primary btn-sm">View More</button>
+                </div>
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

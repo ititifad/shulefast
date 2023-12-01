@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container pt=5 mb-5">
+    <div class="text-center mt-5">
+        <i class="far fa-check-circle fa-5x text-success mb-4"></i>
+        <h1 class="mb-3">Thank You!</h1>
+        <p class="lead mb-4">Your feedback has been received. We appreciate your input.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary">Back Home</a>
+    </div>
+</div>
+
+{% endblock %}

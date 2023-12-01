@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #form1{
+        background-color: rgb(250, 250, 250);
+    }
+    .carousel-previous,
+              .carousel-nextt {
+                  /* background-image: linear-gradient(#315243, #567c39); */
+                  background-color: #0F97CB;
+                  color: #ffffff;
+                  border: none;
+                  
+                  width: 40px;
+                  height: 40px;
+                  margin: 10 10px;
+                  font-size: 16px;
+                  
+              }
+              .carousel-previous:hover,
+              .carousel-nextt:hover {
+                  /* background-image: linear-gradient(#315243, #567c39); */
+                  background-color: #28B34B;
+                  color: #ffffff;
+                  border: none;
+                  
+                  width: 40px;
+                  height: 40px;
+                  margin: 10 10px;
+                  font-size: 16px;
+                  
+              }
+
+</style>
+
+<div class="text-center pt-2">
+<h1>Welcome to ShuleZetu, an Online School Directory</h1>
+</div>
+
+<div class="container mb-3">
+    <form method="GET" class="search-form" action=".">
+        <div class="input-group">
+          <div class="form-outline">
+            <input type="search" id="form1" class="form-control" name="query" />
+            <label class="form-label" for="form1">Search Region</label>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <!-- <div class="form-group inputwithicon">
+          <i class="lni-tag"></i>
+          <input type="text" name="customword" class="form-control" placeholder="Enter Product Keyword">
+        </div> -->
+      </form>
+</div>
+
+<div class="container">
+    <div class="row g-3">
+        {% for region in regions %}
+        <div class="col-6 col-lg-3">
+            <a href="{% url 'region-cat' region.id %}" class="text-dark">
+            <div class="card text-center h-100">
+                <img src="/media/international-2660684_1280.png" alt="" class="img-fluid">
+                <div class="card-body">
+                <div class="card-title">
+                    <p>
+                        {{region.name}}
+                    </p>
+                </div>
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container pt-4">
+    <h2>Matangazo ya shule</h1>
+    <div class="row g-3">
+        {% for ad in ads %}
+        <div class="col-lg-3">
+            <a href="{% url 'school_ad' ad.id %}" class="text-dark">
+            <div class="card text-center h-100">
+                <img src="/media/laptop-5723603_1280.png" alt="" class="img-fluid">
+                <div class="card-body">
+                <div class="card-title">
+                    <p>
+                        {{ad.title}}
+                    </p>
+                    <p>
+                        <small>{{ad.school}}</small>
+                    </p>
+                    <button class="btn btn-primary btn-sm">View More</button>
+                </div>
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<section class="section">
+<div class="container pt-4 mb-5">
+    
+    <h1 class="mb-3">Our Schools</h1>
+        <div class="carousel-nav mb-4">
+                  
+            <button class="carousel-previous"><i class="fas fa-arrow-left"></i></button>
+            
+            <button class="carousel-nextt"><i class="fas fa-arrow-right"></i></button>
+            
+        </div>
+
+    <div class="row g-4" id="slider">
+        {% for school in schools %}
+        <div class="col-lg-3">
+            <a href="{{school.get_absolute_url}}" class="text-dark">
+                <section class="section">
+            <div class="card h-100" style="padding: 10px;margin-bottom: 20px;margin: 10px;">
+               
+                <img src="/media/school-295210_1280.png" alt="{{ school.name }}">
+                
+                <div class="card-body">
+                <div class="card-title">
+                    <p>
+                        {{school.name}}
+                    </p>
+                    <p>
+                        <small>{{school.subcategory}}</small>
+                    </p>
+                    <button class="btn btn-primary btn-sm">View More</button>
+                </div>
+                </div>
+            </div>
+               
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</section>
+{% endblock %}
+

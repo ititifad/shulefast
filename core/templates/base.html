@@ -12,10 +12,7 @@
   rel="stylesheet"
 />
 <!-- Google Fonts -->
-<link
-  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-  rel="stylesheet"
-/>
+
 <!-- MDB -->
 <link
   href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
@@ -26,13 +23,19 @@
 <script src="{% static 'js/jquery.min.js' %}"></script>
     <title>ShuleFast</title>
     <style>
-      body{
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
+    
+    body{
         font-family: 'Roboto', sans-serif;
-        background-color: rgb(255, 255, 255);
-      }
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 21px;
+        color: rgba(0, 0, 0, 0.87);
+        background-color: #F3F4FB;
+    }
       .card {
   background-color: white;
-  border-radius: 0.25rem;
+  border-radius: 1.25rem;
   box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -62,19 +65,68 @@
 }
  /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #006732; 
+  background: #55ADC9; 
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #0A95CA; 
+  background: #55ADC9; 
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 31.25rem;
+  
+}
+
+.label {
+  font-size: .625rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: +1.3px;
+  margin-bottom: 1rem;
+}
+
+.searchBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#searchQueryInput {
+  width: 100%;
+  height: 2.8rem;
+  background: #f5f5f5;
+  outline: none;
+  border: none;
+  border-radius: 1.625rem;
+  padding: 0 3.5rem 0 1.5rem;
+  font-size: 1rem;
+}
+
+#searchQuerySubmit {
+  width: 3.5rem;
+  height: 2.8rem;
+  margin-left: -3.5rem;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+#searchQuerySubmit:hover {
+  cursor: pointer;
+}
+
+.mic-wrapper{
+    background-color: #28B34B;
 }
     </style>
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light">
   <!-- Container wrapper -->
   <div class="container">
     <!-- Navbar brand -->
@@ -117,7 +169,7 @@
       <div class="d-flex align-items-center">
         
         <a href="tel:0719807543">
-        <button type="button" class="btn btn-primary me-3">
+        <button type="button" class="btn btn-outline-info btn-rounded me-3">
           Call Us: 0621879148
         </button>
         </a>

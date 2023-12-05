@@ -33,7 +33,7 @@
       margin-top: 20px;
   }
 
-  .contact-info h6 {
+  .contact-info p {
       display: flex;
       align-items: center;
   }
@@ -47,6 +47,7 @@
       background-color: #44977b; /* MDBootstrap primary color */
       color: #ffffff; /* White text */
       border: none;
+      border-radius: 25px;
   }
 
   @media (max-width: 768px) {
@@ -59,6 +60,11 @@
           margin-right: 5px;
       }
   }
+
+  a {
+  color: #0D95D3;
+  font-weight: lighter;
+}
 
 </style>
 
@@ -80,25 +86,53 @@
         <img src="{{ school.logo.url }}" alt="" class="block__pic img-fluid" id="imageBox" width="100%">
     </div>
         <div class="col-lg-4 px-3">
-            <h6>School Name: <strong>{{ school.name }}</strong></h6>
-            <h6><small>Category: <strong>{{ school.subcategory.category }}</strong></small></h6>
-            <h6>Region: <strong>{{ school.region }}</strong></h6>
+            <p>School Name: <strong>{{ school.name }}</strong></p>
+            <p>Category: <strong>{{ school.subcategory.category }}</strong></p>
+            <p>Region: <strong>{{ school.region }}</strong></p>
             
-                <h6><i class="fas fa-map-marker-alt"></i> Location: <strong>{{ school.location }}</strong></h6>
-                <h6><i class="fas fa-phone"></i> Phone: <strong>{{ school.phone_number1 }}</strong></h6>
-                <h6><i class="fas fa-phone"></i> Phone: <strong>{{ school.phone_number2 }}</strong></h6>
-                <h6><i class="fab fa-whatsapp"></i> WhatsApp Number: <strong>{{ school.whatsapp_number }}</strong></h6>
-                <h6><i class="far fa-envelope"></i> Email: <strong>{{ school.email }}</strong></h6>
+                <p><i class="fas fa-map-marker-alt"style="font-size: 16px;color: orange;" ></i> Location: <strong>{{ school.location }}</strong></p>
+                <!-- Your HTML with tooltips -->
+<p>
+  <i class="fas fa-phone" style="font-size: 16px;color: #4688b8;"></i>
+  Phone:
+  <strong>
+    <a href="tel:{{ school.phone_number1 }}" data-toggle="tooltip" data-placement="top" title="Call {{ school.phone_number1 }}">Call Now</a> |
+    <a href="sms:{{ school.phone_number1 }}" data-toggle="tooltip" data-placement="top" title="Click to Message">Send Message</a>
+  </strong>
+</p>
+<p>
+  <i class="fas fa-phone" style="font-size: 16px;color: #4688b8;"></i>
+  Phone:
+  <strong>
+    <a href="tel:{{ school.phone_number2 }}" data-toggle="tooltip" data-placement="top" title="Call {{ school.phone_number2 }}">Call Now</a> |
+    <a href="sms:{{ school.phone_number2 }}" data-toggle="tooltip" data-placement="top" title="Click to Message">Send Message</a>
+  </strong>
+</p>
+<p>
+  <i class="fab fa-whatsapp text-success" style="font-size: 16px;"></i>
+  WhatsApp Number:
+  <strong>
+    <a href="https://wa.me/{{ school.whatsapp_number }}" target="_blank" data-toggle="tooltip" data-placement="top" title="WhatsApp me {{ school.whatsapp_number }}">Message on WhatsApp</a>
+  </strong>
+</p>
+<p>
+  <i class="far fa-envelope" style="color: #4688b8; font-size: 16px;"></i>
+  Email:
+  <strong>
+    <a href="mailto:{{ school.email }}" data-toggle="tooltip" data-placement="top" title="Click to Email">Send Email</a>
+  </strong>
+</p>
+                
            
             
         </div>
         
-        <div class="col-lg-3 bg-light">
-          <h4>Our Joining Instruction Forms</h4>
+        <div class="col-lg-3">
+          <h5>Our Joining Instruction Forms</h5>
             {% for file in school.schooljoining.all %}
                 <ul>
                     <li>
-                        <a href="{{ file.file.url }}" class="btn btn-download" target="_blank">Download {{ file.title }}</a>
+                        <p><a href="{{ file.file.url }}" class="btn btn-download" target="_blank">Download {{ file.title }}</a></p>
                     </li>
                 </ul>
             {% endfor %}
@@ -229,6 +263,13 @@
       var fullImg = document.getElementById("imageBox")
       fullImg.src = smallImg.src;
   }
+</script>
+
+<script>
+  // Activate Bootstrap tooltips
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 </script>
 
 {% endblock %}

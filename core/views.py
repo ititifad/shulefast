@@ -88,3 +88,8 @@ def feedback(request):
 
 def thank_you_page(request):
     return render(request, 'thanks.html')
+
+
+
+def about_page(request):
+    return render(request, 'about.html')

@@ -75,12 +75,22 @@ class SchoolImage(models.Model):
 
     def __str__(self):
         return self.school.name
+
+
+class SchoolGallery(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True,
+                              related_name='schoolgallery')
+    images = models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return self.school.name
     
 class SchoolJoining(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=True,
                               related_name='schooljoining')
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='files/')
+    show_file = models.BooleanField(default=True)
 
     def __str__(self):
         return self.school.name

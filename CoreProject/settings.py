@@ -38,8 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
-    'storages',
+    # 'storages',
+    'easy_thumbnails',
+    # 'django_filters',
 ]
+
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'small': {'size': (100, 100), 'crop': True},
+        'medium': {'size': (300, 300), 'crop': True},
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,15 +140,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_ACCESS_KEY_ID="AKIA3OOIFQ2L6BW4AXRU"
-AWS_SECRET_ACCESS_KEY="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"
-AWS_STORAGE_BUCKET_NAME="kanisa"
+# AWS_ACCESS_KEY_ID="AKIA3OOIFQ2L6BW4AXRU"
+# AWS_SECRET_ACCESS_KEY="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"
+# AWS_STORAGE_BUCKET_NAME="kanisa"
 
 AWS_S3_REGION_NAME = 'us-east-1'
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

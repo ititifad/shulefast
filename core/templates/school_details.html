@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load thumbnail %}
 {% block content %}
 <style>
   ul {
@@ -66,6 +66,78 @@
   font-weight: lighter;
 }
 
+/* Add your CSS styles here */
+  /* Style for the magnifier modal */
+  #magnifierModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  /* Style for the magnifier modal content */
+  .modal-content {
+    margin: auto;
+    display: block;
+    max-width: 500px;
+    max-height: 600px;
+  }
+
+  /* Style for the cancel button */
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  /* Style for the cancel button on hover */
+  .close:hover,
+  .close:focus {
+    color: #ccc;
+    text-decoration: none;
+    cursor: pointer;
+  }
+    /* Style for navigation buttons */
+    .nav-btn {
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  @media (max-width: 767px) {
+    /* Styles for small devices */
+    .nav-btn {
+      display: block; /* Show the buttons on small devices */
+      position: fixed;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      top: calc(50% - 12.5px);
+      z-index: 1;
+    }
+  }
 </style>
 
 <br>
@@ -128,13 +200,18 @@
         </div>
         
         <div class="col-lg-3">
-          <h5>Our Joining Instruction Forms</h5>
+          
             {% for file in school.schooljoining.all %}
+            
+            {% if file.show_file %}
+            <h5>{{file.title}}</h5>
+            
                 <ul>
                     <li>
-                        <p><a href="{{ file.file.url }}" class="btn btn-download" target="_blank">Download {{ file.title }}</a></p>
+                        <p><a href="{{ file.file.url }}" class="btn btn-download" target="_blank">Download File</a></p>
                     </li>
                 </ul>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
@@ -249,6 +326,36 @@
   <!-- Tabs content -->
 </div>
 
+<div class="container pt-4 mb-5">
+  <h2 class="text-center mb-4">School Photo Gallery</h2>
+  <div class="row g-3" id="image-gallery">
+  
+    {% for image in school.schoolgallery.all %}
+    <div class="col-lg-3">
+        <div class="gallery-item">
+          <img
+          src="{{ image.images.url }}"
+          alt="{{ image.school.name }}"
+          data-magnify-src="{{ image.images.url }}"
+          class="img-fluid"
+          onmouseover="magnifyImage(this)"
+        />
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+<!-- Magnifier Modal -->
+<div id="magnifierModal" class="modal">
+  <span class="close" onclick="closeMagnifierModal()">&times;</span>
+  <button class="nav-btn" onclick="prevImage()">&#8249;</button>
+  <button class="nav-btn" onclick="nextImage()">&#8250;</button>
+  <img class="modal-content" id="magnifiedImage" />
+</div>
+
+  
+
+
 
 <script>
   $(document).ready(function () {
@@ -269,6 +376,89 @@
   // Activate Bootstrap tooltips
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+      $('#image-gallery').slick({
+          infinite: true,
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          lazyLoad: 'ondemand',
+          speed:500,
+          autoplay: true,
+          arrows: true,
+          focusOnSelect: true,
+          // fade: true,
+          
+          // centerMode: true,
+          // centerPadding: '60px',
+          dots:true,
+         
+          dots: false,
+          autoplaySpeed: 2000,
+          responsive: [
+              {
+                  breakpoint: 768,
+                  settings: {
+                      slidesToShow: 1,
+                      slidesToScroll: 1,
+                      
+                  }
+              }
+          ],
+          prevArrow: $('.carousel-previous'), 
+          nextArrow: $('.carousel-nextt')  
+      });
+  });
+</script>
+
+<script>
+  var currentImageIndex = 0;
+  var images = document.querySelectorAll("#image-gallery .gallery-item img");
+
+  function magnifyImage(image) {
+    // Get the magnified image source
+    var magnifySrc = image.getAttribute("data-magnify-src");
+
+    // Find the index of the clicked image
+    currentImageIndex = Array.from(images).indexOf(image);
+
+    // Set the magnified image source
+    document.getElementById("magnifiedImage").src = magnifySrc;
+
+    // Show the magnifier modal
+    document.getElementById("magnifierModal").style.display = "block";
+  }
+
+  function closeMagnifierModal() {
+    // Hide the magnifier modal
+    document.getElementById("magnifierModal").style.display = "none";
+  }
+
+  function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    updateMagnifiedImage();
+  }
+
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    updateMagnifiedImage();
+  }
+
+  function updateMagnifiedImage() {
+    var magnifySrc = images[currentImageIndex].getAttribute("data-magnify-src");
+    document.getElementById("magnifiedImage").src = magnifySrc;
+  }
+
+  // Add keyboard event listener for arrow keys
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      prevImage();
+    } else if (e.key === "ArrowRight") {
+      nextImage();
+    }
   });
 </script>
 

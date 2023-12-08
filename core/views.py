@@ -1,21 +1,34 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import UserFeedbackForm
+from .forms import UserFeedbackForm, SchoolFilterForm
+from django.http import JsonResponse
+from django.views import View
 from .models import *
 from django.db.models import Q
+# from .filters import SchoolFilter
 
 # Create your views here.
 def home(request):
     query = request.GET.get('query', '')
-    regions = Region.objects.filter(Q(name__icontains=query))
+    schools = School.objects.filter(Q(name__icontains=query))
     ads = SchoolAds.objects.filter(is_active=True)
-    schools = School.objects.all().order_by('-id')
+    regions = Region.objects.all().order_by('id')
 
     context  = {
         'regions':regions,
+        'query':query,
         'ads':ads,
-        'schools':schools
+        'schools':schools,
+
     }
     return render(request, 'home.html', context)
+
+
+class AutocompleteSchoolsView(View):
+    def get(self, request, *args, **kwargs):
+        term = request.GET.get('term', '')
+        schools = School.objects.filter(name__icontains=term).values_list('name', flat=True)
+        data = list(schools)
+        return JsonResponse(data, safe=False)
 
 
 def region_cat(request, region_id):
@@ -93,3 +106,50 @@ def thank_you_page(request):
 
 def about_page(request):
     return render(request, 'about.html')
+
+
+def school_list(request):
+    query = request.GET.get('query', '')
+    form = SchoolFilterForm(request.GET)
+    schools = School.objects.filter(Q(name__icontains=query))
+    regions = Region.objects.all()
+    
+
+    if form.is_valid():
+        name = form.cleaned_data.get('name')
+        region = form.cleaned_data.get('region')
+        subcategory = form.cleaned_data.get('subcategory')
+        location = form.cleaned_data.get('location')
+
+        if name:
+            schools = schools.filter(name__icontains=name)
+        if region:
+            schools = schools.filter(region=region)
+        
+        if location:
+            schools = schools.filter(location__icontains=location)
+
+    context = {
+        'schools': schools,
+        'form': form,
+        'regions':regions,
+        
+    }
+
+    return render(request, 'school_list.html', context)
+
+# class SchoolListView(ListView):
+#     model = School
+#     template_name = 'school_list.html'
+#     context_object_name = 'schools'
+#     paginate_by = 10
+
+#     def get_queryset(self):
+#         queryset = School.objects.all()
+#         self.filterset = SchoolFilter(self.request.GET, queryset=queryset)
+#         return self.filterset.qs
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['filter'] = self.filterset
+#         return context

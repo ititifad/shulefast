@@ -16,6 +16,12 @@ class SchoolAdsInline(admin.TabularInline):
     readonly_fields = ('id',)
     extra = 1
 
+
+class SchoolGalleryInline(admin.TabularInline):
+    model = SchoolGallery
+    readonly_fields = ('id',)
+    extra = 1
+
 class SchoolAcademicInline(admin.TabularInline):
     model = SchoolAcademic
     readonly_fields = ('id',)
@@ -41,7 +47,7 @@ class SchoolImageInline(admin.TabularInline):
 class SchoolAdmin(admin.ModelAdmin):
     list_display = ['name','region','phone_number1','whatsapp_number','email','location']
     list_filter = ['name', 'region', 'location']
-    inlines = [SchoolFormsInline, SchoolImageInline,SchoolAdsInline ,SchoolOpenCloseInline, SchoolAcademicInline]
+    inlines = [SchoolFormsInline, SchoolImageInline,SchoolAdsInline ,SchoolOpenCloseInline, SchoolGalleryInline]
 
 admin.site.register(Region)
 admin.site.register(Category)

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
+from embed_video.fields import EmbedVideoField
 
 class SchoolManager(models.Manager):
     def get_queryset(self, user):
@@ -150,3 +151,25 @@ class UserFeedback(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.created_at}"
+    
+
+class SchoolCalendar(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True,
+                              related_name='schoolacalendar')
+    name = models.CharField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return self.school.name
+    
+
+
+class SchoolVideo(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True,
+                              related_name='schoolvideos')
+    # title = models.CharField(max_length=255)
+    video = EmbedVideoField()
+
+    def __str__(self):
+        return self.school.name

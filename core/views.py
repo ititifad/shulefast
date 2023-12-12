@@ -23,12 +23,21 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-class AutocompleteSchoolsView(View):
-    def get(self, request, *args, **kwargs):
-        term = request.GET.get('term', '')
-        schools = School.objects.filter(name__icontains=term).values_list('name', flat=True)
-        data = list(schools)
-        return JsonResponse(data, safe=False)
+# class AutocompleteSchoolsView(View):
+#     def get(self, request, *args, **kwargs):
+#         term = request.GET.get('term', '')
+#         schools = School.objects.filter(name__icontains=term).values_list('name', flat=True)
+#         data = list(schools)
+#         return JsonResponse(data, safe=False)
+
+def name_autocomplete(request):
+    if 'term' in request.GET:
+        term = request.GET['term']
+        schools = School.objects.filter(Q(name__icontains=term))
+        suggestions = [school.name for school in schools]
+        return JsonResponse(suggestions, safe=False)
+
+    return JsonResponse([], safe=False)
 
 
 def region_cat(request, region_id):

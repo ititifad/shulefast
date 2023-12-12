@@ -34,6 +34,8 @@
               }
 
 
+
+
 </style>
 
 <!-- Header Section -->
@@ -47,11 +49,11 @@
   
       <!-- Search Form Section -->
       <div class="container mb-3">
-        <form method="GET" class="search-form" action="{% url 'school_list' %}">
+        <form method="GET" action="{% url 'school_list' %}" id="product-search-form" class="mb-2">
           <div class="wrapper">
             <div class="label">Submit your search</div>
             <div class="searchBar">
-              <input id="searchQueryInput" type="text" id="schoolSearch" name="query" placeholder="Search for a school..." value="{{ query }}" />
+              <input id="searchQueryInput" type="text" class="product-search-input" name="query" placeholder="Search for a school..." value="{{ query }}" />
               <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit" class="mic-wrapper">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                   <path fill="#666666"
@@ -166,22 +168,57 @@ import { Tooltip, Ripple, initMDB } from "mdb-ui-kit";
 initMDB({ Tooltip, Ripple });
 </script>
 <script>
-    var schoolsData = [];  // Global variable to store autocomplete data
-
-    $(function() {
-        $.ajax({
-            url: "{% url 'autocomplete_schools' %}",
-            dataType: "json",
-            success: function(data) {
-                schoolsData = data;
+    $(function () {
+        // Initialize autocomplete
+        $(".product-search-input").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "{% url 'product_autocomplete' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function (data) {
+                        // Check if there are results
+                        if (data.length === 0) {
+                            // Display "No Result Found" message
+                            response([{ label: "No Result Found", value: "" }]);
+                        } else {
+                            response(data);
+                        }
+                    }
+                });
+            },
+            minLength: 2, // Minimum characters to start autocomplete
+            autoFill: true,
+            selectFirst: true,
+    
+            // Display results in a custom container
+            appendTo: "#autocomplete-results",
+            
+            select: function (event, ui) {
+                // Redirect to the search results page when a suggestion is selected
+                if (ui.item.value !== "") {
+                    $("#product-search-form").submit();
+                }
             }
-        });
-
-        $("#schoolSearch").autocomplete({
-            source: schoolsData,
-            minLength: 2,
-        });
+        }).data("ui-autocomplete")._renderItem = function (ul, item) {
+            // Render "No Result Found" message with a custom class
+            if (item.label === "No Result Found") {
+                return $("<li class='no-result-found'>")
+                    .append("<div>" + item.label + "</div>")
+                    .appendTo(ul);
+            } else {
+                return $("<li>")
+                    .append("<div>" + item.label + "</div>")
+                    .appendTo(ul);
+            }
+        };
     });
-</script>
+    
+    
+    
+    
+    </script>
 {% endblock %}
 

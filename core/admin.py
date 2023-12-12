@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from  embed_video.admin  import  AdminVideoMixin
 
 class SchoolModelAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
@@ -19,6 +20,17 @@ class SchoolAdsInline(admin.TabularInline):
 
 class SchoolGalleryInline(admin.TabularInline):
     model = SchoolGallery
+    readonly_fields = ('id',)
+    extra = 1
+
+class SchoolCalendarInline(admin.TabularInline):
+    model = SchoolCalendar
+    readonly_fields = ('id',)
+    extra = 1
+
+
+class SchoolVideoInline(AdminVideoMixin, admin.TabularInline):
+    model = SchoolVideo
     readonly_fields = ('id',)
     extra = 1
 
@@ -47,7 +59,14 @@ class SchoolImageInline(admin.TabularInline):
 class SchoolAdmin(admin.ModelAdmin):
     list_display = ['name','region','phone_number1','whatsapp_number','email','location']
     list_filter = ['name', 'region', 'location']
-    inlines = [SchoolFormsInline, SchoolImageInline,SchoolAdsInline ,SchoolOpenCloseInline, SchoolGalleryInline]
+    inlines = [SchoolFormsInline, 
+               SchoolImageInline,
+               SchoolAdsInline ,
+               SchoolOpenCloseInline, 
+               SchoolGalleryInline, 
+               SchoolCalendarInline,
+               SchoolVideoInline
+               ]
 
 admin.site.register(Region)
 admin.site.register(Category)

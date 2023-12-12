@@ -37,7 +37,7 @@
         font-weight: 400;
         line-height: 21px;
         color: rgba(0, 0, 0, 0.87);
-        background-color: #F8F9FD;
+        background-color: #fcfdff;
     }
       .card {
   background-color: white;
@@ -84,6 +84,7 @@
   width: 100%;
   max-width: 31.25rem;
   
+  
 }
 
 .label {
@@ -99,18 +100,62 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  
 }
 
 #searchQueryInput {
   width: 100%;
   height: 2.8rem;
-  background: #f5f5f5;
+  background: #ffffff;
   outline: none;
   border: none;
-  border-radius: 1.625rem;
+  
   padding: 0 3.5rem 0 1.5rem;
   font-size: 1rem;
 }
+
+/* Styles for autocomplete results */
+.ui-autocomplete {
+  position: fixed; /* Detach from the input field */
+  top: 3.8rem; /* Position below the input field */
+  left: 1.5rem; /* Adjust horizontal position as needed */
+  
+  z-index: 1000;
+  background-color: #e2e2e2; /* Customize background color */
+  border: 1px solid #f7f7f7; /* Add subtle border */
+
+  width: auto; /* Set the width to match the input */
+  max-width: 600px; /* Limit maximum width */
+  /* Limit the max height of the results container */
+  overflow-y: auto; /* Add a scrollbar for overflow */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
+
+/* Style for individual autocomplete items */
+.ui-autocomplete li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 14px;
+  list-style-type: none;
+  transition: background-color 0.3s;
+  
+  /* Customize item appearance */
+  color: #333;
+  background-color: #fff;
+  
+  
+  /* Highlight hovered item */
+  &:hover {
+    background-color: #fafafa;
+  }
+}
+
+/* Optionally, style the active item */
+.ui-autocomplete li.ui-state-active {
+  background-color: #f2f2f2;
+}
+
+
 
 #searchQuerySubmit {
   width: 3.5rem;
@@ -118,7 +163,9 @@
   margin-left: -3.5rem;
   background: none;
   border: none;
+  
   outline: none;
+  background-color: #d3d3d3;
 }
 
 #searchQuerySubmit:hover {

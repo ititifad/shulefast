@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load l10n %}
 {% load thumbnail %}
+{% load embed_video_tags %}
 {% block content %}
 <style>
   ul {
@@ -86,7 +88,7 @@
   .modal-content {
     margin: auto;
     display: block;
-    max-width: 500px;
+    max-width: 700px;
     max-height: 600px;
   }
 
@@ -229,7 +231,7 @@
         role="tab"
         aria-controls="ex3-tabs-1"
         aria-selected="true"
-        >About {{school}}</a
+        >About Us</a
       >
     </li>
     <li class="nav-item" role="presentation">
@@ -256,6 +258,19 @@
         >Opening/Closing Hours</a
       >
     </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        id="ex3-tab-4"
+        data-mdb-toggle="tab"
+        href="#ex3-tabs-4"
+        role="tab"
+        aria-controls="ex3-tabs-4"
+        aria-selected="false"
+        >Muhula wa masomo 2024</a
+      >
+    </li>
+
   </ul>
   <!-- Tabs navs -->
   
@@ -301,8 +316,8 @@
     <div class="row justify-content-center">
       <div class="col-lg-6">
       <div class="table-responsive">
-        <table class="table table-sm table-borderless">
-          <thead class="bg-light">
+        <table class="table table-white table-hover table-sm table-bordered">
+          <thead class="bg-info text-white">
           <tr>
             <th>Day</th>
             <th>Open</th>
@@ -312,8 +327,38 @@
           {% for day in school.openinghours.all %}
           <tr>
             <td>{{day.weekday}}</td>
-            <td>{{day.from_hour}}</td>
-            <td>{{day.to_hour}}</td>
+            <td>{{day.from_hour|localize}}</td>
+            <td>{{day.to_hour|localize}}</td>
+          </tr>
+
+          {% endfor %}
+        </table>
+      </div>
+      </div>
+    </div>
+    </div>
+    <div
+      class="tab-pane fade"
+      id="ex3-tabs-4"
+      role="tabpanel"
+      aria-labelledby="ex3-tab-4"
+    >
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover table-bordered text-center">
+          <thead class="bg-info text-white">
+          <tr>
+            <th>Title</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+          </thead>
+          {% for calendar in school.schoolacalendar.all %}
+          <tr>
+            <td>{{calendar.name}}</td>
+            <td>{{calendar.start_date|localize}}</td>
+            <td>{{calendar.end_date|localize}}</td>
           </tr>
 
           {% endfor %}
@@ -328,6 +373,13 @@
 
 <div class="container pt-4 mb-5">
   <h2 class="text-center mb-4">School Photo Gallery</h2>
+  <div class="carousel-nav mb-4">
+                  
+    <button class="carousel-previous btn btn-info"><i class="fas fa-arrow-left"></i></button>
+    
+    <button class="carousel-nextt btn btn-info"><i class="fas fa-arrow-right"></i></button>
+    
+</div>
   <div class="row g-3" id="image-gallery">
   
     {% for image in school.schoolgallery.all %}
@@ -354,6 +406,19 @@
 </div>
 
   
+<div class="container pt-2 mb-3">
+  <h2 class="text-center">Our School Videos</h2>
+  <div class="row g-3">
+    {% for vid in school.schoolvideos.all %}
+    <div class="col-lg-4">
+      <div class="ratio ratio-4x3">
+        {% video vid.video 'tiny' %}
+      
+    </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
 
 

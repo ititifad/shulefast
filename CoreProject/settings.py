@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 'storages',
     'easy_thumbnails',
     # 'django_filters',
+    'embed_video',
 ]
 
 
